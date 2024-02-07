@@ -20,4 +20,6 @@ The application calculates the structural similarity index between the two image
   - Second image with areas of difference filled.
 - Shows the similarity score between the two images.
 
+## Host link 
+This application is hosted on Streamlit Cloud. You can access it [here](https://image-difference-analyzer-gb.streamlit.app).
 
