@@ -43,7 +43,7 @@ def find_image_difference(image1, image2):
     contours = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
     contours = contours[0] if len(contours) == 2 else contours[1]
 
-    mask = np.zeros(before.shape, dtype='uint8')
+    mask = np.zeros(image2.shape, dtype='uint8')
     filled_after = after.copy()
 
     for c in contours:
