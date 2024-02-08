@@ -2,7 +2,19 @@ import streamlit as st
 import cv2
 import numpy as np
 from skimage.metrics import structural_similarity
-
+def resize_image(image, target_width, target_height):
+    """
+    Resize the input image to the target dimensions.
+    
+    Args:
+        image (ndarray): The input image.
+        target_width (int): The target width for resizing.
+        target_height (int): The target height for resizing.
+    
+    Returns:
+        ndarray: The resized image.
+    """
+    return cv2.resize(image, (target_width, target_height))
 def find_image_difference(before, after):
     """
     Find the differences between two input images.
@@ -21,10 +33,14 @@ def find_image_difference(before, after):
             - filled_after (ndarray): The second input image with areas of difference filled.
             - similarity_score (float): The similarity score between the two images.
     """
-
+    # Resize images to have the same dimensions
+    max_width = max(before.shape[1], after.shape[1])
+    max_height = max(before.shape[0], after.shape[0])
+    before_resized = resize_image(before, max_width, max_height)
+    after_resized = resize_image(after, max_width, max_height)
     # Convert images to grayscale
-    before_gray = cv2.cvtColor(before, cv2.COLOR_BGR2GRAY)
-    after_gray = cv2.cvtColor(after, cv2.COLOR_BGR2GRAY)
+    before_gray = cv2.cvtColor(before_resized, cv2.COLOR_BGR2GRAY)
+    after_gray = cv2.cvtColor(after_resized, cv2.COLOR_BGR2GRAY)
 
     # Compute SSIM between the two images
     (similarity_score, diff) = structural_similarity(before_gray, after_gray, full=True)
@@ -58,7 +74,6 @@ def find_image_difference(before, after):
 
     return before, after, diff, diff_box, mask, filled_after, similarity_score
 
-
 def main():
     st.set_page_config(page_title="Image Difference Analyzer", page_icon="🔍", layout="wide", initial_sidebar_state="expanded")
     st.title("Image Difference Analyzer")
@@ -72,9 +87,12 @@ def main():
         image2 = cv2.imdecode(np.frombuffer(uploaded_file2.read(), np.uint8), 1)
 
         result_before, result_after, diff, diff_box, mask, filled_after, similarity_score = find_image_difference(image1, image2)
-
+        if similarity_score * 100 > 90:
+            st.write("The images are similar") 
+        else :
+            st.write("The images are not similar")
        # st.image(result_before, caption="First Image with Differences Highlighted", use_column_width=True)
-        st.image(cv2.cvtColor(result_after, cv2.COLOR_BGR2RGB), caption="Result Image", width=300)  # Adjust the width as needed
+        st.image(cv2.cvtColor(result_after, cv2.COLOR_BGR2RGB), caption="Result Image", width=300) # Adjust the width as needed
        # st.image(diff, caption="Difference Image", use_column_width=True)
        # st.image(diff_box, caption="Difference Image with Bounding Boxes", use_column_width=True)
        # st.image(mask, caption="Mask Representing Areas of Difference", use_column_width=True)
