@@ -3,7 +3,7 @@ import cv2
 import numpy as np
 from skimage.metrics import structural_similarity
 
-def find_image_difference(before, after):
+def find_image_difference(image1, image2):
     """
     Find the differences between two input images.
 
@@ -23,8 +23,8 @@ def find_image_difference(before, after):
     """
 
     # Convert images to grayscale
-    before_gray = cv2.cvtColor(before, cv2.COLOR_BGR2GRAY)
-    after_gray = cv2.cvtColor(after, cv2.COLOR_BGR2GRAY)
+    before_gray = cv2.cvtColor(image1, cv2.COLOR_BGR2GRAY)
+    after_gray = cv2.cvtColor(image2, cv2.COLOR_BGR2GRAY)
 
     # Compute SSIM between the two images
     (similarity_score, diff) = structural_similarity(before_gray, after_gray, full=True)
