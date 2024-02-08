@@ -44,7 +44,7 @@ def find_image_difference(image1, image2):
     contours = contours[0] if len(contours) == 2 else contours[1]
 
     mask = np.zeros(image2.shape, dtype='uint8')
-    filled_after = after.copy()
+    filled_after = image1.copy()
 
     for c in contours:
         area = cv2.contourArea(c)
