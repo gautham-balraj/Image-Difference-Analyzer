@@ -7,6 +7,7 @@ Image Difference Analyzer is a web application built using Streamlit, designed t
 The application calculates the structural similarity index between the two images, which measures the perceived similarity between images. It then highlights the differences between the images and provides various visualizations to aid in understanding the discrepancies.
 
 ## Preview 
+![demo1](https://github.com/gautham-balraj/Image-Difference-Analyzer/assets/121476362/0c9c178c-a529-40b2-ae34-36b5d0b2bbf3)
 
 
 ## Functionality
