@@ -50,8 +50,8 @@ def find_image_difference(image1, image2):
         area = cv2.contourArea(c)
         if area > 40:
             x,y,w,h = cv2.boundingRect(c)
-            cv2.rectangle(before, (x, y), (x + w, y + h), (36,255,12), 2)
-            cv2.rectangle(after, (x, y), (x + w, y + h), (36,255,12), 2)
+            cv2.rectangle(image1, (x, y), (x + w, y + h), (36,255,12), 2)
+            cv2.rectangle(image2, (x, y), (x + w, y + h), (36,255,12), 2)
             cv2.rectangle(diff_box, (x, y), (x + w, y + h), (36,255,12), 2)
             cv2.drawContours(mask, [c], 0, (255,255,255), -1)
             cv2.drawContours(filled_after, [c], 0, (0,255,0), -1)
