@@ -3,7 +3,7 @@ import cv2
 import numpy as np
 from skimage.metrics import structural_similarity
 
-def find_image_difference(image1, image2):
+def find_image_difference(before, after):
     """
     Find the differences between two input images.
 
@@ -23,8 +23,8 @@ def find_image_difference(image1, image2):
     """
 
     # Convert images to grayscale
-    before_gray = cv2.cvtColor(image1, cv2.COLOR_BGR2GRAY)
-    after_gray = cv2.cvtColor(image2, cv2.COLOR_BGR2GRAY)
+    before_gray = cv2.cvtColor(before, cv2.COLOR_BGR2GRAY)
+    after_gray = cv2.cvtColor(after, cv2.COLOR_BGR2GRAY)
 
     # Compute SSIM between the two images
     (similarity_score, diff) = structural_similarity(before_gray, after_gray, full=True)
@@ -43,20 +43,21 @@ def find_image_difference(image1, image2):
     contours = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
     contours = contours[0] if len(contours) == 2 else contours[1]
 
-    mask = np.zeros(image2.shape, dtype='uint8')
-    filled_after = image1.copy()
+    mask = np.zeros(before.shape, dtype='uint8')
+    filled_after = after.copy()
 
     for c in contours:
         area = cv2.contourArea(c)
         if area > 40:
             x,y,w,h = cv2.boundingRect(c)
-            cv2.rectangle(image1, (x, y), (x + w, y + h), (36,255,12), 2)
-            cv2.rectangle(image2, (x, y), (x + w, y + h), (36,255,12), 2)
+            cv2.rectangle(before, (x, y), (x + w, y + h), (36,255,12), 2)
+            cv2.rectangle(after, (x, y), (x + w, y + h), (36,255,12), 2)
             cv2.rectangle(diff_box, (x, y), (x + w, y + h), (36,255,12), 2)
             cv2.drawContours(mask, [c], 0, (255,255,255), -1)
             cv2.drawContours(filled_after, [c], 0, (0,255,0), -1)
 
     return before, after, diff, diff_box, mask, filled_after, similarity_score
+
 
 def main():
     st.set_page_config(page_title="Image Difference Analyzer", page_icon="🔍", layout="wide", initial_sidebar_state="expanded")
