@@ -73,7 +73,7 @@ def main():
         result_before, result_after, diff, diff_box, mask, filled_after, similarity_score = find_image_difference(image1, image2)
 
        # st.image(result_before, caption="First Image with Differences Highlighted", use_column_width=True)
-        st.image(result_after, caption="Result Image", width=300)  # Adjust the width as needed
+        st.image(cv2.cvtColor(result_after, cv2.COLOR_BGR2RGB), caption="Result Image", width=300)  # Adjust the width as needed
        # st.image(diff, caption="Difference Image", use_column_width=True)
        # st.image(diff_box, caption="Difference Image with Bounding Boxes", use_column_width=True)
        # st.image(mask, caption="Mask Representing Areas of Difference", use_column_width=True)
